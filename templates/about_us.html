@@ -1,0 +1,560 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}关于我们 - 光震科技{% endblock %}
+
+{% block content %}
+
+<style>
+/* ===== 关于我们页面专属样式 ===== */
+
+/* 页面顶部 hero 区 */
+.about-hero {
+    text-align: center;
+    padding: 4rem 0 2rem;
+    position: relative;
+}
+
+.about-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 30%, #00f6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.04em;
+}
+
+.about-hero .lead {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+}
+
+.about-hero hr {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f6ff, transparent);
+    border: none;
+    margin: 1.5rem auto;
+    opacity: 1;
+}
+
+/* ===== 公司简介区 ===== */
+.section-intro {
+    padding: 2rem 0 3rem;
+}
+
+.section-intro img {
+    border-radius: 14px;
+    border: 1px solid rgba(0, 246, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 246, 255, 0.08), 0 20px 50px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.4s ease;
+}
+
+.section-intro img:hover {
+    box-shadow: 0 0 50px rgba(0, 246, 255, 0.18), 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.section-intro h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    position: relative;
+    padding-left: 14px;
+}
+
+.section-intro h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8%;
+    height: 84%;
+    width: 3px;
+    background: linear-gradient(180deg, #00f6ff, rgba(0, 246, 255, 0.1));
+    border-radius: 2px;
+}
+
+.section-intro p {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.85;
+}
+
+.section-intro p strong {
+    color: #00f6ff;
+    font-weight: 600;
+}
+
+/* ===== 通用 Section 标题 ===== */
+.section-heading {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.section-heading h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 14px;
+    letter-spacing: 0.04em;
+}
+
+.section-heading h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: #00f6ff;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 246, 255, 0.6);
+}
+
+.section-heading p.sub {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    letter-spacing: 0.06em;
+}
+
+/* ===== 核心价值观卡片 ===== */
+.values-section {
+    padding: 2.5rem 0;
+}
+
+.value-card {
+    background: rgba(20, 35, 55, 0.7);
+    border: 1px solid rgba(0, 246, 255, 0.15);
+    border-radius: 14px;
+    padding: 2.25rem 1.75rem;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top center, rgba(0, 246, 255, 0.06) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 35px rgba(0, 246, 255, 0.18), 0 16px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(0, 246, 255, 0.45);
+    background: rgba(20, 40, 65, 0.85);
+}
+
+.value-card:hover::before {
+    opacity: 1;
+}
+
+.value-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: rgba(0, 246, 255, 0.08);
+    border: 1px solid rgba(0, 246, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    transition: var(--transition-base, all 0.3s ease);
+}
+
+.value-card:hover .value-icon {
+    background: rgba(0, 246, 255, 0.15);
+    border-color: rgba(0, 246, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 246, 255, 0.25);
+}
+
+.value-icon i {
+    font-size: 1.8rem;
+    color: #00f6ff;
+}
+
+.value-card h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.06em;
+}
+
+.value-card p {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* ===== 发展历程 ===== */
+.timeline-section {
+    padding: 2.5rem 0;
+}
+
+.timeline-list {
+    position: relative;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 120px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(0, 246, 255, 0.4) 10%, rgba(0, 246, 255, 0.4) 90%, transparent);
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 1.1rem 0;
+    position: relative;
+    transition: background 0.25s;
+    border-radius: 8px;
+}
+
+.timeline-item:hover {
+    background: rgba(0, 246, 255, 0.03);
+}
+
+.timeline-year {
+    min-width: 105px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #00f6ff;
+    padding-top: 2px;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 8px rgba(0, 246, 255, 0.4);
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 114px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    background: #00f6ff;
+    border-radius: 50%;
+    border: 2px solid #0d1b2a;
+    box-shadow: 0 0 10px rgba(0, 246, 255, 0.7);
+    z-index: 1;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: translateY(-50%) scale(1.35);
+    box-shadow: 0 0 18px rgba(0, 246, 255, 0.9);
+}
+
+.timeline-content {
+    flex: 1;
+    font-size: 0.93rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
+    padding-top: 2px;
+}
+
+/* 备用：原 list-group 式历程（如果模板输出的是 list-group） */
+.list-group-item {
+    background: rgba(20, 35, 55, 0.55);
+    border-color: rgba(0, 246, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 1rem 1.25rem;
+    transition: background 0.25s;
+}
+
+.list-group-item:hover {
+    background: rgba(0, 246, 255, 0.06);
+}
+
+.list-group-item strong {
+    color: #00f6ff;
+    margin-right: 0.75rem;
+    font-weight: 600;
+}
+
+/* ===== 合作伙伴 ===== */
+.partners-section {
+    padding: 2.5rem 0;
+}
+
+.partner-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+
+.partner-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(0, 246, 255, 0.1);
+    border-radius: 10px;
+    transition: all 0.35s ease;
+}
+
+.partner-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 246, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 246, 255, 0.1);
+}
+
+.grayscale {
+    filter: grayscale(100%) brightness(0.7);
+    transition: filter 0.35s ease, transform 0.35s ease;
+    display: block;
+}
+
+.grayscale:hover {
+    filter: grayscale(0) brightness(1);
+    transform: scale(1.08);
+}
+
+/* ===== 联系我们区块 ===== */
+.contact-section {
+    background: linear-gradient(135deg, rgba(20, 40, 65, 0.7), rgba(15, 28, 48, 0.8));
+    border: 1px solid rgba(0, 246, 255, 0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 246, 255, 0.5), rgba(255, 196, 0, 0.3), transparent);
+}
+
+.contact-section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00f6ff;
+    margin-bottom: 1rem;
+    letter-spacing: 0.04em;
+}
+
+.contact-section p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.92rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.contact-section p i {
+    color: #00f6ff;
+    width: 16px;
+    font-size: 0.9rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.social-link {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(0, 246, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: rgba(0, 246, 255, 0.12);
+    border-color: rgba(0, 246, 255, 0.5);
+    color: #00f6ff !important;
+    box-shadow: 0 0 16px rgba(0, 246, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+/* ===== 入场动画 ===== */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .timeline-list::before { left: 90px; }
+    .timeline-year { min-width: 75px; font-size: 0.85rem; }
+    .timeline-dot { left: 84px; }
+    .contact-section { padding: 1.75rem 1.25rem; }
+    .partner-grid { gap: 1.25rem; }
+}
+
+@media (max-width: 576px) {
+    .about-hero { padding: 2.5rem 0 1.5rem; }
+    .value-card { padding: 1.75rem 1.25rem; }
+    .timeline-item { flex-direction: column; gap: 0.25rem; padding-left: 1.5rem; }
+    .timeline-list::before { left: 4px; }
+    .timeline-year { text-align: left; min-width: auto; }
+    .timeline-dot { left: -1px; top: 24px; transform: none; }
+    .timeline-item:hover .timeline-dot { transform: scale(1.35); }
+}
+</style>
+
+<div class="container py-4">
+
+    <!-- 页面 Hero -->
+    <div class="about-hero animate-in">
+        <h1>关于光震科技</h1>
+        <p class="lead">创新驱动 · 技术赋能 · 共赢未来</p>
+        <hr>
+    </div>
+
+    <!-- 公司简介 -->
+    <div class="section-intro animate-in delay-1">
+        <div class="row align-items-center g-5 mb-5">
+            <div class="col-md-6">
+                <img src="/media/office/ office.jpg" class="img-fluid rounded shadow w-100" alt="公司办公环境">
+            </div>
+            <div class="col-md-6">
+                <h2>公司简介</h2>
+                <p>光震科技成立于2018年，总部位于东莞，是一家专注于人工智能、云计算和大数据技术、视频安防、系统集成的国家级高新技术企业。我们致力于为全球企业提供领先的数字化解决方案，助力客户实现业务敏捷创新与智能决策。</p>
+                <p>公司核心团队来自阿里巴巴、腾讯、华为等知名科技企业，拥有丰富的行业经验和技术积累。目前，我们已为金融、制造、零售、医疗等多个行业的超过200家企业提供了数字化转型服务。</p>
+                <p><strong>使命：</strong> 用科技推动商业进步，让数据创造更大价值。</p>
+                <p><strong>愿景：</strong> 成为企业数字化转型最值得信赖的合作伙伴。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 核心价值观 -->
+    <div class="values-section animate-in delay-2">
+        <div class="section-heading">
+            <h2>核心价值观</h2>
+        </div>
+        <div class="row g-4 mb-2">
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>创新</h4>
+                    <p>持续探索前沿技术，不断突破思维边界，用创造力驱动产品进化</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>共赢</h4>
+                    <p>与客户、伙伴、员工共同成长，共享成功，构建可持续的合作生态</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>卓越</h4>
+                    <p>追求极致的产品与服务体验，精益求精，超越客户的每一份期待</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发展历程 -->
+    <div class="timeline-section animate-in delay-3">
+        <div class="section-heading">
+            <h2>发展历程</h2>
+        </div>
+        <div class="col-md-10 mx-auto">
+            <ul class="list-group list-group-flush">
+                {% for development in dep_h %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ development.development_history_time }}</strong>
+                        {{ development.development_history_content }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- 合作伙伴 -->
+    <div class="partners-section animate-in delay-1">
+        <div class="section-heading">
+            <h2>合作伙伴</h2>
+            <p class="sub">与行业领先企业携手共创</p>
+        </div>
+        <div class="partner-grid">
+            {% for partner in partner %}
+            <div class="partner-item">
+                <img src="/media/{{ partner.image }}" class="grayscale" style="height: 52px; width: auto;" alt="{{ partner.name }}">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 联系我们 -->
+    <div class="contact-section animate-in delay-2">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h3><i class="fas fa-paper-plane me-2" style="font-size: 1rem;"></i>联系我们</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 东莞市万江小享社区文明路37号</p>
+                <p><i class="fas fa-phone"></i> 13712810707</p>
+                <p><i class="fas fa-envelope"></i> llg@lights-g.com</p>
+            </div>
+            <div class="col-md-6">
+                <h3><i class="fas fa-share-alt me-2" style="font-size: 1rem;"></i>关注我们</h3>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="微信"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="social-link" aria-label="微博"><i class="fab fa-weibo"></i></a>
+                    <a href="#" class="social-link" aria-label="领英"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

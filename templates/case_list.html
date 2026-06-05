@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}成功案例 - 光震科技{% endblock %}
+
+{% block content %}
+<style>
+/* ===== 页面 Hero ===== */
+.case-hero {
+    text-align: center;
+    padding: 4rem 0 2.5rem;
+}
+
+.case-hero h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 30%, #00f6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.case-hero .lead {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.case-hero hr {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f6ff, transparent);
+    border: none;
+    opacity: 1;
+    margin: 1.25rem auto 0;
+}
+
+/* ===== 案例卡片 ===== */
+.case-card {
+    background: rgba(18, 32, 50, 0.75);
+    border: 1px solid rgba(0,246,255,0.13);
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    position: relative;
+}
+
+.case-card:hover {
+    transform: translateY(-9px);
+    box-shadow: 0 0 35px rgba(0,246,255,0.15), 0 20px 50px rgba(0,0,0,0.45);
+    border-color: rgba(0,246,255,0.4);
+}
+
+/* 图片区 */
+.case-img-wrap {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.case-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.case-card:hover .case-img-wrap img {
+    transform: scale(1.06);
+}
+
+/* 图片顶部渐变遮罩 */
+.case-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(18,32,50,0.85), transparent);
+    pointer-events: none;
+}
+
+/* 无图占位 */
+.case-img-placeholder {
+    height: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0,246,255,0.05), rgba(0,80,100,0.1));
+    border-bottom: 1px solid rgba(0,246,255,0.1);
+    flex-shrink: 0;
+}
+
+.case-img-placeholder i {
+    font-size: 3rem;
+    color: rgba(0,246,255,0.25);
+}
+
+/* 卡片内容 */
+.case-body {
+    padding: 1.4rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.case-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.45;
+    margin-bottom: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: 0.02em;
+}
+
+/* 元信息列表 */
+.case-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.case-meta li {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.case-meta li i {
+    color: rgba(0,246,255,0.55);
+    width: 13px;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+}
+
+.case-meta .highlight {
+    color: rgba(0,246,255,0.8);
+    font-weight: 500;
+}
+
+/* 分割线 */
+.case-divider {
+    height: 1px;
+    background: rgba(0,246,255,0.1);
+    border: none;
+    margin: 0 0 0.9rem;
+    opacity: 1;
+}
+
+/* 描述文字 */
+.case-desc {
+    font-size: 0.87rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.75;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 查看详情按钮 */
+.btn-case {
+    display: inline-block;
+    margin-top: 1.1rem;
+    padding: 0.38rem 1.1rem;
+    border-radius: 50px;
+    border: 1px solid rgba(0,246,255,0.38);
+    color: #00f6ff;
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    align-self: flex-start;
+}
+
+.btn-case:hover {
+    background: rgba(0,246,255,0.1);
+    border-color: #00f6ff;
+    color: #00f6ff;
+    box-shadow: 0 0 14px rgba(0,246,255,0.3);
+}
+
+/* ===== 分页 ===== */
+.case-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 2.5rem 0 1rem;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,246,255,0.2);
+    background: rgba(18,32,50,0.6);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.page-btn:hover {
+    background: rgba(0,246,255,0.1);
+    border-color: rgba(0,246,255,0.5);
+    color: #00f6ff;
+    box-shadow: 0 0 12px rgba(0,246,255,0.2);
+}
+
+.page-btn.active {
+    background: rgba(0,246,255,0.12);
+    border-color: #00f6ff;
+    color: #00f6ff;
+    font-weight: 600;
+    box-shadow: 0 0 14px rgba(0,246,255,0.25);
+    cursor: default;
+}
+
+.page-btn.disabled {
+    opacity: 0.28;
+    pointer-events: none;
+}
+
+.page-sep {
+    color: rgba(255,255,255,0.25);
+    font-size: 0.9rem;
+    padding: 0 4px;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.empty-state i {
+    font-size: 3.2rem;
+    color: rgba(0,246,255,0.15);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ===== 入场动画 ===== */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.col-case { animation: fadeUp 0.55s ease both; }
+.col-case:nth-child(1) { animation-delay: 0.05s; }
+.col-case:nth-child(2) { animation-delay: 0.12s; }
+.col-case:nth-child(3) { animation-delay: 0.19s; }
+.col-case:nth-child(4) { animation-delay: 0.26s; }
+.col-case:nth-child(5) { animation-delay: 0.33s; }
+.col-case:nth-child(6) { animation-delay: 0.40s; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 576px) {
+    .case-hero { padding: 2.5rem 0 1.5rem; }
+    .case-img-wrap,
+    .case-img-placeholder { height: 180px; }
+}
+</style>
+
+<div class="container py-4">
+
+    <!-- 页面标题 -->
+    <div class="case-hero">
+        <h1>成功案例</h1>
+        <p class="lead">见证技术赋能，驱动商业变革</p>
+        <hr>
+    </div>
+
+    <!-- 案例列表 -->
+    <div class="row g-4 pb-2">
+        {% for case in case_list %}
+        <div class="col-md-6 col-lg-4 col-case">
+            <div class="case-card">
+
+                {% if case.cover %}
+                <div class="case-img-wrap">
+                    <img src="/media/{{ case.cover }}" alt="{{ case.title }}">
+                </div>
+                {% else %}
+                <div class="case-img-placeholder">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                {% endif %}
+
+                <div class="case-body">
+                    <h5 class="case-title">{{ case.title }}</h5>
+
+                    <ul class="case-meta">
+                        <li>
+                            <i class="fas fa-user"></i>
+                            <span>客户：<span class="highlight">{{ case.client|default:"保密客户" }}</span></span>
+                        </li>
+                        <li>
+                            <i class="fas fa-microchip"></i>
+                            <span>技术：<span class="highlight">{{ case.technology }}</span></span>
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>时间：{{ case.completion_date|date:"Y-m" }}</span>
+                        </li>
+                    </ul>
+
+                    <hr class="case-divider">
+                    <p class="case-desc">{{ case.description|truncatewords:30 }}</p>
+                    <a href="{{ case.pk }}" class="btn-case">查看详情 →</a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                暂无案例数据，敬请期待
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 分页 -->
+    {% if is_paginated %}
+    <nav aria-label="案例分页">
+        <div class="case-pagination">
+
+            {% if page_obj.has_previous %}
+            <a class="page-btn" href="?page=1" title="首页">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a class="page-btn" href="?page={{ page_obj.previous_page_number }}">
+                <i class="fas fa-angle-left"></i> 上一页
+            </a>
+            {% else %}
+            <span class="page-btn disabled"><i class="fas fa-angle-double-left"></i></span>
+            <span class="page-btn disabled"><i class="fas fa-angle-left"></i> 上一页</span>
+            {% endif %}
+
+            <span class="page-sep">—</span>
+            <span class="page-btn active">
+                第 {{ page_obj.number }} 页 / 共 {{ page_obj.paginator.num_pages }} 页
+            </span>
+            <span class="page-sep">—</span>
+
+            {% if page_obj.has_next %}
+            <a class="page-btn" href="?page={{ page_obj.next_page_number }}">
+                下一页 <i class="fas fa-angle-right"></i>
+            </a>
+            <a class="page-btn" href="?page={{ page_obj.paginator.num_pages }}" title="末页">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% else %}
+            <span class="page-btn disabled">下一页 <i class="fas fa-angle-right"></i></span>
+            <span class="page-btn disabled"><i class="fas fa-angle-double-right"></i></span>
+            {% endif %}
+
+        </div>
+    </nav>
+    {% endif %}
+
+</div>
+{% endblock %}

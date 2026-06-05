@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}核心团队 - 光震科技{% endblock %}
+
+{% block content %}
+<style>
+/* ===== 页面 Hero ===== */
+.team-hero {
+    text-align: center;
+    padding: 4rem 0 2.5rem;
+}
+
+.team-hero h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 30%, #00f6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.team-hero .lead {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.team-hero hr {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f6ff, transparent);
+    border: none;
+    opacity: 1;
+    margin: 1.25rem auto 0;
+}
+
+/* ===== 团队卡片 ===== */
+.team-card {
+    background: rgba(18, 32, 50, 0.75);
+    border: 1px solid rgba(0, 246, 255, 0.13);
+    border-radius: 16px;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 顶部装饰光线 */
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,246,255,0.35), transparent);
+    transition: opacity 0.35s ease;
+    opacity: 0;
+}
+
+/* hover 顶部辐射光 */
+.team-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top center, rgba(0,246,255,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 35px rgba(0,246,255,0.15), 0 20px 50px rgba(0,0,0,0.45);
+    border-color: rgba(0,246,255,0.4);
+}
+
+.team-card:hover::before,
+.team-card:hover::after {
+    opacity: 1;
+}
+
+/* ===== 头像 ===== */
+.avatar-ring {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+/* 旋转光圈 */
+.avatar-ring::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(
+        rgba(0,246,255,0) 0deg,
+        rgba(0,246,255,0.6) 90deg,
+        rgba(0,246,255,0) 180deg,
+        rgba(0,246,255,0.15) 270deg,
+        rgba(0,246,255,0) 360deg
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: spinRing 4s linear infinite;
+    animation-play-state: paused;
+}
+
+.team-card:hover .avatar-ring::before {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+@keyframes spinRing {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* 头像遮罩层（让光圈不覆盖图片） */
+.avatar-ring::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: rgba(18, 32, 50, 0.75);
+    z-index: 0;
+}
+
+.member-avatar {
+    position: relative;
+    z-index: 1;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(0,246,255,0.35);
+    box-shadow: 0 0 20px rgba(0,246,255,0.15);
+    display: block;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.team-card:hover .member-avatar {
+    border-color: #00f6ff;
+    box-shadow: 0 0 30px rgba(0,246,255,0.4);
+}
+
+.avatar-placeholder {
+    position: relative;
+    z-index: 1;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,246,255,0.08), rgba(0,80,100,0.15));
+    border: 3px solid rgba(0,246,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.35s ease;
+}
+
+.team-card:hover .avatar-placeholder {
+    border-color: rgba(0,246,255,0.5);
+}
+
+.avatar-placeholder i {
+    font-size: 2.8rem;
+    color: rgba(0,246,255,0.35);
+}
+
+/* ===== 成员信息 ===== */
+.member-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+}
+
+.member-role {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(0,246,255,0.9);
+    letter-spacing: 0.1em;
+    padding: 3px 14px;
+    border-radius: 50px;
+    background: rgba(0,246,255,0.08);
+    border: 1px solid rgba(0,246,255,0.2);
+    margin-bottom: 1.1rem;
+}
+
+.member-divider {
+    width: 30px;
+    height: 1px;
+    background: rgba(0,246,255,0.3);
+    margin: 0 auto 1.1rem;
+    border: none;
+    opacity: 1;
+}
+
+.member-bio {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.85;
+    text-align: left;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: rgba(0,246,255,0.15);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ===== 入场动画 ===== */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.team-card {
+    animation: fadeUp 0.55s ease both;
+}
+
+/* 依次延迟 */
+.col-team:nth-child(1) .team-card { animation-delay: 0.05s; }
+.col-team:nth-child(2) .team-card { animation-delay: 0.12s; }
+.col-team:nth-child(3) .team-card { animation-delay: 0.19s; }
+.col-team:nth-child(4) .team-card { animation-delay: 0.26s; }
+.col-team:nth-child(5) .team-card { animation-delay: 0.33s; }
+.col-team:nth-child(6) .team-card { animation-delay: 0.40s; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 576px) {
+    .team-hero { padding: 2.5rem 0 1.5rem; }
+    .team-card { padding: 2rem 1.5rem 1.75rem; }
+    .member-avatar,
+    .avatar-placeholder { width: 110px; height: 110px; }
+}
+</style>
+
+<div class="container py-4">
+
+    <!-- 页面标题 -->
+    <div class="team-hero">
+        <h1>核心团队</h1>
+        <p class="lead">汇聚顶尖技术专家与商业精英，共创数字未来</p>
+        <hr>
+    </div>
+
+    <!-- 团队列表 -->
+    <div class="row g-4 pb-5">
+        {% for member in teams %}
+        <div class="col-lg-4 col-md-6 col-team">
+            <div class="team-card">
+                <div class="avatar-ring mx-auto">
+                    {% if member.image %}
+                        <img src="/media/{{ member.image }}" class="member-avatar" alt="{{ member.name }}">
+                    {% else %}
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <p class="member-name">{{ member.name }}</p>
+                <span class="member-role">{{ member.job_position }}</span>
+                <hr class="member-divider">
+                <div class="member-bio">{{ member.bio|linebreaksbr }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="fas fa-users"></i>
+                团队成员信息正在更新中，敬请期待！
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

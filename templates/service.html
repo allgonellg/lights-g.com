@@ -1,0 +1,798 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}服务与支持 - 光震科技{% endblock %}
+
+{% block content %}
+<style>
+/* ===== 页面 Hero ===== */
+.service-hero {
+    text-align: center;
+    padding: 4rem 0 2.5rem;
+    animation: fadeUp 0.6s ease both;
+}
+
+.service-hero h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 30%, #00f6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.service-hero .lead {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.service-hero hr {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f6ff, transparent);
+    border: none;
+    opacity: 1;
+    margin: 1.25rem auto 0;
+}
+
+/* ===== 通用 Section 标题 ===== */
+.section-heading {
+    text-align: center;
+    margin-bottom: 2.75rem;
+}
+
+.section-heading h2 {
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    font-weight: 700;
+    color: #fff;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 14px;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.section-heading h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 2px;
+    background: #00f6ff;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0,246,255,0.6);
+}
+
+.section-heading p {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+/* ===== 核心服务卡片 ===== */
+.service-card {
+    background: rgba(18, 32, 50, 0.72);
+    border: 1px solid rgba(0,246,255,0.13);
+    border-radius: 16px;
+    padding: 2.25rem 1.75rem;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top center, rgba(0,246,255,0.06) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.service-card:hover {
+    transform: translateY(-9px);
+    box-shadow: 0 0 35px rgba(0,246,255,0.15), 0 20px 50px rgba(0,0,0,0.45);
+    border-color: rgba(0,246,255,0.4);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+/* 顶部装饰线 */
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,246,255,0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.service-card:hover::after {
+    opacity: 1;
+}
+
+.service-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: rgba(0,246,255,0.07);
+    border: 1px solid rgba(0,246,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.4rem;
+    transition: all 0.35s ease;
+}
+
+.service-card:hover .service-icon {
+    background: rgba(0,246,255,0.13);
+    border-color: rgba(0,246,255,0.45);
+    box-shadow: 0 0 20px rgba(0,246,255,0.2);
+}
+
+.service-icon i {
+    font-size: 1.65rem;
+    color: #00f6ff;
+}
+
+.service-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.03em;
+}
+
+.service-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* ===== 服务流程 ===== */
+.process-section {
+    padding: 4rem 0;
+    border-top: 1px solid rgba(0,246,255,0.07);
+}
+
+.process-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+}
+
+/* 连接线 */
+.process-steps::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: calc(10% + 32px);
+    right: calc(10% + 32px);
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,246,255,0.4), rgba(0,246,255,0.15), rgba(0,246,255,0.4));
+    z-index: 0;
+}
+
+.process-step {
+    flex: 1;
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.6s ease both;
+}
+
+.process-step:nth-child(1) { animation-delay: 0.05s; }
+.process-step:nth-child(2) { animation-delay: 0.15s; }
+.process-step:nth-child(3) { animation-delay: 0.25s; }
+.process-step:nth-child(4) { animation-delay: 0.35s; }
+.process-step:nth-child(5) { animation-delay: 0.45s; }
+
+.step-num {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(13,27,42,1);
+    border: 2px solid rgba(0,246,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00f6ff;
+    box-shadow: 0 0 18px rgba(0,246,255,0.15);
+    transition: all 0.35s ease;
+    position: relative;
+}
+
+.process-step:hover .step-num {
+    background: rgba(0,246,255,0.1);
+    border-color: #00f6ff;
+    box-shadow: 0 0 28px rgba(0,246,255,0.35);
+    transform: scale(1.08);
+}
+
+.process-step h5 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+}
+
+.process-step p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ===== 支持方式 ===== */
+.support-section {
+    padding: 4rem 0;
+    border-top: 1px solid rgba(0,246,255,0.07);
+}
+
+.support-card {
+    background: rgba(18,32,50,0.65);
+    border: 1px solid rgba(0,246,255,0.13);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    height: 100%;
+    transition: all 0.35s ease;
+}
+
+.support-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0,246,255,0.35);
+    box-shadow: 0 0 25px rgba(0,246,255,0.1), 0 12px 30px rgba(0,0,0,0.4);
+    background: rgba(18,32,50,0.85);
+}
+
+.support-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(0,246,255,0.07);
+    border: 1px solid rgba(0,246,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.35s ease;
+}
+
+.support-card:hover .support-icon {
+    background: rgba(0,246,255,0.13);
+    border-color: rgba(0,246,255,0.45);
+    box-shadow: 0 0 14px rgba(0,246,255,0.2);
+}
+
+.support-icon i {
+    font-size: 1.3rem;
+    color: #00f6ff;
+}
+
+.support-info h5 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+}
+
+.support-info p {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.support-info .contact-val {
+    font-size: 0.88rem;
+    color: rgba(0,246,255,0.85);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* ===== SLA / 承诺条款 ===== */
+.sla-section {
+    padding: 4rem 0;
+    border-top: 1px solid rgba(0,246,255,0.07);
+}
+
+.sla-card {
+    background: linear-gradient(135deg, rgba(18,32,50,0.7), rgba(12,24,40,0.8));
+    border: 1px solid rgba(0,246,255,0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sla-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,246,255,0.5), rgba(255,196,0,0.3), transparent);
+}
+
+.sla-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0,246,255,0.07);
+    transition: background 0.25s;
+}
+
+.sla-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.sla-item:first-child {
+    padding-top: 0;
+}
+
+.sla-check {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0,246,255,0.08);
+    border: 1px solid rgba(0,246,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sla-check i {
+    color: #00f6ff;
+    font-size: 0.85rem;
+}
+
+.sla-text h6 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.02em;
+}
+
+.sla-text p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ===== 数据统计 ===== */
+.stats-section {
+    padding: 3.5rem 0;
+    border-top: 1px solid rgba(0,246,255,0.07);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    animation: fadeUp 0.6s ease both;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.05s; }
+.stat-item:nth-child(2) { animation-delay: 0.15s; }
+.stat-item:nth-child(3) { animation-delay: 0.25s; }
+.stat-item:nth-child(4) { animation-delay: 0.35s; }
+
+.stat-num {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 20%, #00f6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+}
+
+.stat-unit {
+    font-size: 1rem;
+    -webkit-text-fill-color: rgba(0,246,255,0.7);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+/* ===== 咨询 CTA ===== */
+.cta-section {
+    padding: 3rem 0 5rem;
+}
+
+.cta-box {
+    background: linear-gradient(135deg, rgba(18,32,50,0.75), rgba(12,24,40,0.85));
+    border: 1px solid rgba(0,246,255,0.18);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f6ff, rgba(255,196,0,0.4), transparent);
+}
+
+/* 背景装饰圆 */
+.cta-box::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,246,255,0.06), transparent 65%);
+    pointer-events: none;
+}
+
+.cta-box h2 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.04em;
+}
+
+.cta-box p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.92rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+}
+
+.btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #00d4ff, #00f6ff);
+    color: #001a22;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    border: none;
+    box-shadow: 0 0 25px rgba(0,246,255,0.4), 0 4px 20px rgba(0,0,0,0.25);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+}
+
+.btn-cta:hover {
+    box-shadow: 0 0 40px rgba(0,246,255,0.6), 0 8px 25px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
+    color: #001a22;
+}
+
+.btn-cta-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(0,246,255,0.4);
+    color: #00f6ff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+}
+
+.btn-cta-outline:hover {
+    background: rgba(0,246,255,0.08);
+    border-color: #00f6ff;
+    color: #00f6ff;
+    box-shadow: 0 0 20px rgba(0,246,255,0.25);
+    transform: translateY(-3px);
+}
+
+/* ===== 动画 ===== */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.col-service { animation: fadeUp 0.55s ease both; }
+.col-service:nth-child(1) { animation-delay: 0.05s; }
+.col-service:nth-child(2) { animation-delay: 0.12s; }
+.col-service:nth-child(3) { animation-delay: 0.19s; }
+.col-service:nth-child(4) { animation-delay: 0.26s; }
+.col-service:nth-child(5) { animation-delay: 0.33s; }
+.col-service:nth-child(6) { animation-delay: 0.40s; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .service-hero { padding: 2.5rem 0 1.5rem; }
+    .process-steps { flex-wrap: wrap; gap: 2rem; }
+    .process-steps::before { display: none; }
+    .process-step { flex: 0 0 calc(50% - 1rem); }
+    .sla-card { padding: 1.75rem 1.25rem; }
+    .cta-box { padding: 2rem 1.25rem; }
+    .btn-cta, .btn-cta-outline { margin: 0.4rem; }
+}
+
+@media (max-width: 480px) {
+    .process-step { flex: 0 0 100%; }
+}
+</style>
+
+<div class="container py-4">
+
+    <!-- Hero -->
+    <div class="service-hero">
+        <h1>服务与支持</h1>
+        <p class="lead">全方位技术服务，全生命周期陪伴</p>
+        <hr>
+    </div>
+
+    <!-- ===== 核心服务 ===== -->
+    <section class="pb-5">
+        <div class="section-heading">
+            <h2>核心服务</h2>
+            <p>覆盖数字化转型全链路，为企业提供一站式解决方案</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-brain"></i></div>
+                    <h4>AI 智能解决方案</h4>
+                    <p>基于深度学习与大模型技术，为企业构建智能决策、自然语言处理、计算机视觉等 AI 能力，赋能业务自动化升级。</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-cloud"></i></div>
+                    <h4>云计算与基础架构</h4>
+                    <p>提供混合云、多云管理与云原生架构设计，帮助企业实现弹性扩展、降本增效，保障业务连续性与高可用。</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-database"></i></div>
+                    <h4>大数据平台建设</h4>
+                    <p>从数据采集、治理到可视化分析，构建企业级数据中台，让数据真正成为驱动增长的核心资产。</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-video"></i></div>
+                    <h4>视频安防系统</h4>
+                    <p>集成 AI 视频分析、人脸识别、行为检测等技术，为园区、工厂、零售等场景提供智能安防整体方案。</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                    <h4>系统集成与部署</h4>
+                    <p>提供软硬件系统集成、本地化部署及运维管理，确保各类信息化系统高效稳定运行，降低 IT 管理复杂度。</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-service">
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h4>培训与技术赋能</h4>
+                    <p>针对企业技术团队提供定制化培训课程，涵盖 AI 应用、云平台运营、数据分析等方向，助力团队持续成长。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 服务数据 ===== -->
+    <section class="stats-section">
+        <div class="row g-0">
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num">200<span class="stat-unit">+</span></div>
+                <p class="stat-label">服务企业数量</p>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num">98<span class="stat-unit">%</span></div>
+                <p class="stat-label">客户满意度</p>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num">13<span class="stat-unit">年</span></div>
+                <p class="stat-label">行业深耕经验</p>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+                <div class="stat-num">24<span class="stat-unit">h</span></div>
+                <p class="stat-label">全天候技术响应</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 服务流程 ===== -->
+    <section class="process-section">
+        <div class="section-heading">
+            <h2>服务流程</h2>
+            <p>标准化、透明化的交付体系，让每个项目都有迹可循</p>
+        </div>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-num">01</div>
+                <h5>需求调研</h5>
+                <p>深入了解业务场景与痛点，明确目标与边界</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">02</div>
+                <h5>方案设计</h5>
+                <p>量身定制技术路线，输出详细解决方案报告</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">03</div>
+                <h5>开发实施</h5>
+                <p>敏捷迭代开发，定期同步进度，透明协作</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">04</div>
+                <h5>测试验收</h5>
+                <p>多轮测试确保质量，客户参与验收确认</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">05</div>
+                <h5>上线运维</h5>
+                <p>平稳上线交付，提供持续运维与优化支持</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 支持方式 & SLA ===== -->
+    <section class="support-section">
+        <div class="section-heading">
+            <h2>技术支持</h2>
+            <p>多渠道、快响应，确保您的业务零中断</p>
+        </div>
+        <div class="row g-4">
+            <!-- 支持渠道 -->
+            <div class="col-lg-7">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="support-card">
+                            <div class="support-icon"><i class="fas fa-headset"></i></div>
+                            <div class="support-info">
+                                <h5>电话支持</h5>
+                                <p>工作日及紧急故障 7×24 小时热线响应</p>
+                                <span class="contact-val">13712810707</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="support-card">
+                            <div class="support-icon"><i class="fas fa-envelope-open-text"></i></div>
+                            <div class="support-info">
+                                <h5>邮件支持</h5>
+                                <p>提交工单或技术问题，4 小时内响应</p>
+                                <span class="contact-val">llg@lights-g.com</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="support-card">
+                            <div class="support-icon"><i class="fab fa-weixin"></i></div>
+                            <div class="support-info">
+                                <h5>企业微信</h5>
+                                <p>专属客户服务群，实时沟通技术问题</p>
+                                <span class="contact-val">添加服务号获取入群码</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="support-card">
+                            <div class="support-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="support-info">
+                                <h5>现场支持</h5>
+                                <p>重大故障或需求可安排工程师上门服务</p>
+                                <span class="contact-val">东莞市万江小享社区文明路37号</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLA 承诺 -->
+            <div class="col-lg-5">
+                <div class="sla-card h-100">
+                    <h5 style="font-size:1rem; font-weight:700; color:#00f6ff; letter-spacing:0.05em; margin-bottom:1.25rem;">
+                        <i class="fas fa-shield-alt me-2" style="font-size:0.9rem;"></i>服务质量承诺（SLA）
+                    </h5>
+                    <div class="sla-item">
+                        <div class="sla-check"><i class="fas fa-check"></i></div>
+                        <div class="sla-text">
+                            <h6>紧急故障响应 ≤ 1 小时</h6>
+                            <p>P0 级故障电话优先处理，远程诊断同步介入</p>
+                        </div>
+                    </div>
+                    <div class="sla-item">
+                        <div class="sla-check"><i class="fas fa-check"></i></div>
+                        <div class="sla-text">
+                            <h6>普通问题响应 ≤ 4 小时</h6>
+                            <p>邮件/微信工单受理后 4 小时内给出处理方案</p>
+                        </div>
+                    </div>
+                    <div class="sla-item">
+                        <div class="sla-check"><i class="fas fa-check"></i></div>
+                        <div class="sla-text">
+                            <h6>系统可用性 ≥ 99.9%</h6>
+                            <p>生产环境多节点部署，承诺年度可用率达标</p>
+                        </div>
+                    </div>
+                    <div class="sla-item">
+                        <div class="sla-check"><i class="fas fa-check"></i></div>
+                        <div class="sla-text">
+                            <h6>版本迭代与免费升级</h6>
+                            <p>合同期内产品版本升级免费推送，不额外收费</p>
+                        </div>
+                    </div>
+                    <div class="sla-item">
+                        <div class="sla-check"><i class="fas fa-check"></i></div>
+                        <div class="sla-text">
+                            <h6>数据安全与保密协议</h6>
+                            <p>严格签署 NDA，客户数据全程加密存储与传输</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>准备好开始了吗？</h2>
+            <p>与我们的技术顾问深入沟通，获取专属数字化转型方案</p>
+            <div>
+                <a href="tel:13712810707" class="btn-cta">
+                    <i class="fas fa-phone"></i> 立即致电咨询
+                </a>
+                <a href="mailto:llg@lights-g.com" class="btn-cta-outline">
+                    <i class="fas fa-envelope"></i> 发送需求邮件
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

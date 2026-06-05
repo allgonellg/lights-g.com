@@ -1,0 +1,671 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}光震科技 - 企业数字化转型专家{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<style>
+    /* ===== Hero 轮播区域 ===== */
+.hero-carousel {
+    height: 580px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-carousel .carousel,
+.hero-carousel .carousel-inner,
+.hero-carousel .carousel-item {
+    height: 100%;
+}
+
+.hero-carousel .carousel-item {
+    background: linear-gradient(135deg, #050e1a, #0d1b2a, #1a2e45);
+}
+
+.hero-carousel .carousel-item img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: brightness(0.55);
+}
+
+/* 渐变遮罩 */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(5,14,26,0.15) 0%, rgba(5,14,26,0.55) 100%),
+        linear-gradient(90deg, rgba(0,246,255,0.06) 0%, transparent 60%);
+    z-index: 1;
+}
+
+/* 扫光线装饰 */
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,246,255,0.04), transparent);
+    animation: scanLight 6s ease-in-out infinite;
+}
+
+@keyframes scanLight {
+    0%   { left: -60%; }
+    100% { left: 120%; }
+}
+
+/* 文字区域 */
+.hero-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 860px;
+    text-align: center;
+    z-index: 2;
+    color: #fff;
+}
+
+.hero-caption h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 20px rgba(0,246,255,0.7), 0 0 60px rgba(0,246,255,0.3);
+    margin-bottom: 1rem;
+    animation: fadeInDown 0.9s ease both;
+}
+
+.hero-caption .lead {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 0.9s ease 0.3s both;
+}
+
+.hero-caption .sub-text {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.9s ease 0.45s both;
+}
+
+.hero-caption .btn-hero {
+    display: inline-block;
+    padding: 0.75rem 2.2rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #00d4ff, #00f6ff);
+    color: #001a22;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    border: none;
+    box-shadow: 0 0 20px rgba(0,246,255,0.45), 0 4px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.9s ease 0.6s both;
+    text-decoration: none;
+}
+
+.hero-caption .btn-hero:hover {
+    box-shadow: 0 0 35px rgba(0,246,255,0.7), 0 8px 30px rgba(0,0,0,0.3);
+    transform: translateY(-3px) scale(1.03);
+    color: #001a22;
+}
+
+/* 轮播控件 */
+.carousel-indicators {
+    z-index: 3;
+    margin-bottom: 1.5rem;
+}
+
+.carousel-indicators button {
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background-color: rgba(255,255,255,0.4);
+    border: none;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+.carousel-indicators .active {
+    background-color: #00f6ff;
+    width: 44px;
+    box-shadow: 0 0 10px #00f6ff;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 3;
+    width: 5%;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: drop-shadow(0 0 6px rgba(0,246,255,0.8));
+}
+
+/* ===== 动画关键帧 ===== */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 通用 Section 容器 ===== */
+.page-section {
+    padding: 4rem 0;
+    position: relative;
+}
+
+.page-section + .page-section {
+    border-top: 1px solid rgba(0,246,255,0.07);
+}
+
+/* Section 标题 */
+.section-header {
+    text-align: center;
+    margin-bottom: 2.75rem;
+}
+
+.section-header h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 14px;
+    margin-bottom: 0.6rem;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: #00f6ff;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0,246,255,0.7);
+}
+
+.section-header p {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    margin: 0;
+}
+
+/* ===== 通用内容卡片 ===== */
+.content-card {
+    background: rgba(18, 32, 50, 0.75);
+    border: 1px solid rgba(0,246,255,0.13);
+    border-radius: 14px;
+    overflow: hidden;
+    height: 100%;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px rgba(0,246,255,0.15), 0 16px 40px rgba(0,0,0,0.45);
+    border-color: rgba(0,246,255,0.38);
+}
+
+.content-card .card-img-wrap {
+    overflow: hidden;
+    height: 200px;
+    flex-shrink: 0;
+}
+
+.content-card .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.content-card:hover .card-img-wrap img {
+    transform: scale(1.06);
+}
+
+/* 无图片占位 */
+.card-img-placeholder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0,246,255,0.06), rgba(0,100,120,0.1));
+    border-bottom: 1px solid rgba(0,246,255,0.1);
+    flex-shrink: 0;
+}
+
+.card-img-placeholder i {
+    font-size: 2.8rem;
+    color: rgba(0,246,255,0.35);
+}
+
+.content-card .card-body {
+    padding: 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.content-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.content-card .card-meta {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.38);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.content-card .card-meta i {
+    color: rgba(0,246,255,0.5);
+    font-size: 0.75rem;
+}
+
+.content-card .card-text {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.58);
+    line-height: 1.7;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.content-card .card-footer-link {
+    margin-top: 1.1rem;
+}
+
+.content-card .btn-card {
+    font-size: 0.82rem;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    border: 1px solid rgba(0,246,255,0.4);
+    color: #00f6ff;
+    background: transparent;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.content-card .btn-card:hover {
+    background: rgba(0,246,255,0.12);
+    border-color: #00f6ff;
+    box-shadow: 0 0 12px rgba(0,246,255,0.3);
+}
+
+/* 案例标签 */
+.tech-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 50px;
+    background: rgba(0,246,255,0.08);
+    border: 1px solid rgba(0,246,255,0.2);
+    color: rgba(0,246,255,0.8);
+    margin-bottom: 0.5rem;
+}
+
+/* ===== 团队成员卡片 ===== */
+.team-card {
+    background: rgba(18, 32, 50, 0.75);
+    border: 1px solid rgba(0,246,255,0.13);
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top center, rgba(0,246,255,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px rgba(0,246,255,0.15), 0 16px 40px rgba(0,0,0,0.45);
+    border-color: rgba(0,246,255,0.38);
+}
+
+.team-card:hover::before {
+    opacity: 1;
+}
+
+.team-avatar-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.25rem;
+}
+
+.team-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(0,246,255,0.4);
+    box-shadow: 0 0 20px rgba(0,246,255,0.2);
+    transition: border-color 0.35s, box-shadow 0.35s;
+    display: block;
+}
+
+.team-card:hover .team-avatar {
+    border-color: #00f6ff;
+    box-shadow: 0 0 30px rgba(0,246,255,0.4);
+}
+
+.team-avatar-placeholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,246,255,0.1), rgba(0,100,120,0.2));
+    border: 3px solid rgba(0,246,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-avatar-placeholder i {
+    font-size: 2.5rem;
+    color: rgba(0,246,255,0.45);
+}
+
+.team-card .member-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.04em;
+}
+
+.team-card .member-role {
+    font-size: 0.82rem;
+    color: #00f6ff;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.85rem;
+    font-weight: 500;
+}
+
+.team-card .member-bio {
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== "查看更多"按钮 ===== */
+.btn-more {
+    display: inline-block;
+    padding: 0.6rem 2rem;
+    border-radius: 50px;
+    border: 1px solid rgba(0,246,255,0.4);
+    color: #00f6ff;
+    background: transparent;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-more:hover {
+    background: rgba(0,246,255,0.1);
+    border-color: #00f6ff;
+    color: #00f6ff;
+    box-shadow: 0 0 20px rgba(0,246,255,0.3);
+    transform: translateY(-2px);
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.9rem;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .hero-carousel { height: 420px; }
+    .hero-caption  { width: 90%; }
+    .page-section  { padding: 2.5rem 0; }
+}
+
+@media (max-width: 576px) {
+    .hero-carousel { height: 360px; }
+    .carousel-control-prev,
+    .carousel-control-next { display: none; }
+}
+</style>
+
+<!-- ===== Hero 轮播 ===== -->
+<div class="hero-carousel">
+    <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
+        <div class="carousel-inner h-100">
+            {% for slide in slides %}
+            <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
+                <img src="/media/{{ slide.image }}" alt="{{ slide.title }}">
+                <div class="hero-overlay"></div>
+                <div class="hero-caption">
+                    <h1>{{ slide.title }}</h1>
+                    <p class="lead">{{ slide.content }}</p>
+                    <p class="sub-text">{{ slide.content_next }}</p>
+                    <a href="{% url 'case_list' %}" class="btn-hero">查看成功案例</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="carousel-indicators">
+            {% for slide in slides %}
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">上一张</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">下一张</span>
+        </button>
+    </div>
+</div>
+
+
+<!-- ===== 核心团队 ===== -->
+<div class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>核心团队</h2>
+            <p>汇聚行业精英，引领技术前沿</p>
+        </div>
+
+        <div class="row g-4">
+            {% for member in teams %}
+            <div class="col-md-4">
+                <div class="team-card">
+                    <div class="team-avatar-wrap mx-auto">
+                        {% if member.image %}
+                            <img src="/media/{{ member.image }}" class="team-avatar" alt="{{ member.name }}">
+                        {% else %}
+                            <div class="team-avatar-placeholder mx-auto">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <p class="member-name">{{ member.name }}</p>
+                    <p class="member-role">{{ member.Job_position }}</p>
+                    <p class="member-bio">{{ member.bio|truncatewords:20 }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state col-12">
+                <i class="fas fa-users fa-2x mb-3 d-block" style="color: rgba(0,246,255,0.2);"></i>
+                暂无团队成员信息
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'team_list' %}" class="btn-more">查看全部团队 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== 最新动态 ===== -->
+<div class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>最新动态</h2>
+            <p>了解光震最新资讯与技术突破</p>
+        </div>
+
+        <div class="row g-4">
+            {% for item in news %}
+            <div class="col-md-4">
+                <div class="content-card">
+                    {% if item.cover %}
+                    <div class="card-img-wrap">
+                        <img src="/media/{{ item.cover }}" alt="{{ item.title }}">
+                    </div>
+                    {% else %}
+                    <div class="card-img-placeholder">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <p class="card-meta">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ item.creat_at|date:"Y-m-d" }}
+                        </p>
+                        <h5 class="card-title">{{ item.title }}</h5>
+                        <p class="card-text">{{ item.content|slice:60 }}...</p>
+                        <div class="card-footer-link">
+                            <a href="{% url 'news_detail' item.pk %}" class="btn-card">阅读全文 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state col-12">
+                <i class="fas fa-rss fa-2x mb-3 d-block" style="color: rgba(0,246,255,0.2);"></i>
+                暂无新闻动态
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'news_list' %}" class="btn-more">更多动态 →</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== 成功案例 ===== -->
+<div class="page-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>成功案例</h2>
+            <p>帮助各行业客户实现价值飞跃</p>
+        </div>
+
+        <div class="row g-4">
+            {% for case in news_case %}
+            <div class="col-md-4">
+                <div class="content-card">
+                    {% if case.cover %}
+                    <div class="card-img-wrap">
+                        <img src="/media/{{ case.cover }}" alt="{{ case.title }}">
+                    </div>
+                    {% else %}
+                    <div class="card-img-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        {% if case.technology %}
+                        <span class="tech-tag">{{ case.technology }}</span>
+                        {% endif %}
+                        <h5 class="card-title">{{ case.title }}</h5>
+                        <p class="card-meta">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ case.creat_at|date:"Y-m" }}
+                        </p>
+                        <p class="card-text">{{ case.description|truncatewords:25 }}</p>
+                        <div class="card-footer-link">
+                            <a href="/news/case_list/{{ case.id }}" class="btn-card">查看详情 →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state col-12">
+                <i class="fas fa-briefcase fa-2x mb-3 d-block" style="color: rgba(0,246,255,0.2);"></i>
+                暂无案例数据
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'case_list' %}" class="btn-more">浏览全部案例 →</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
