@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@i*u9d5jo*2j_gqr96$58h^^1k#^+0enn=b1t1tv2*x%hlr^x+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['lights-g.com','www.lights-g.com']
 
 
 # Application definition
@@ -99,7 +99,7 @@ DATABASES = {
         "NAME": "lights-g",
         "HOST": '127.0.0.1',
         "USER": 'root',
-        "PASSWORD":'adminllg',
+        "PASSWORD":'Lrj198310.!@',
         "PORT":'3306',
     }
 }
@@ -142,7 +142,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # list
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # string
+STATIC_ROOT = '/var/www/lights-g/lights-g.com/staticfiles'   # string
 
 
 
@@ -153,7 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 配置前端用户展示文件位置
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # string, not a list
+MEDIA_ROOT = '/var/www/lights-g/lights-g.com/media'  # string, not a list
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 配置ckeditor文件位置和上传使用的后台插件
