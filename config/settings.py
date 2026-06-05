@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'slide',
     'news',
     'team',
-    "ckeditor",
-    "ckeditor_uploader",
     'lights',
     'about_us',
     'service',
