@@ -94,10 +94,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "lights-g",
+        "NAME": "l",
         "HOST": '127.0.0.1',
-        "USER": 'root',
-        "PASSWORD":'Lrj198310.!@',
+        "USER": 'r',
+        "PASSWORD":'',
         "PORT":'3306',
     }
 }
